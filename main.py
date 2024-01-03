@@ -129,6 +129,7 @@ test_font = pygame.font.Font('font/Pixeltype.ttf', 50)
 game_active = False
 start_time = 0
 score = 0
+high_score = 0
 
 player = pygame.sprite.GroupSingle()
 player.add(Player())
@@ -239,15 +240,17 @@ while True:
     else:
         screen.fill((94, 129, 162))
         screen.blit(player_stand, player_stand_rect)
-        obstacle_rect_list.clear()
-        player_rect.midbottom = (80, 300)
-        player_gravity = 0
-
+        high_score_message = test_font.render(f'High score: {high_score}', False, (11, 196, 169))
+        high_score_rect = high_score_message.get_rect(center = (400, 320))
         score_message = test_font.render(f'Your score: {score}', False, (11, 196, 169))
-        score_message_rect = score_message.get_rect(center = (400, 330))
+        score_message_rect = score_message.get_rect(center = (400, 350))
         screen.blit(game_name, game_name_rect)
         if score == 0: screen.blit(game_message, game_message_rect)
-        else: screen.blit(score_message, score_message_rect)
+        else: 
+            if score > high_score:
+                high_score = score
+            screen.blit(high_score_message, high_score_rect)
+            screen.blit(score_message, score_message_rect)
         
     pygame.display.update()
     clock.tick(60)
